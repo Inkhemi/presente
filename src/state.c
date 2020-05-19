@@ -19,6 +19,7 @@ state *state_new(){
     sta->pla.ent.y = TILE_SIZE/2;
     sta->pla.ent.rad = PLAYER_RAD;
     sta->pla.ent.hp  = PLAYER_HP;
+    sta->pla.ent.inmu = PLAYER_INMUNITY;
 
     // Retrieve pointer to the state
     return sta;
@@ -82,6 +83,23 @@ void state_update(level *lvl, state *sta){
                 sta->bullets[i].ent.dead = 1;
             }
         }
+    }
+    // == Check player-enemy collisions
+    for(int i=0;i<sta->n_enemies;i++){
+        //if a enemy is colliding with the player
+        if(entity_collision(&sta->enemies[i].ent,&sta->pla.ent)){
+            if(sta->pla.ent.inmu==3){
+                sta->pla.ent.hp -= sta->enemies[i].ent.dam;
+                sta->pla.ent.inmu -=1;
+            }
+        }
+    }
+    //inmunity frame
+    if(sta->pla.ent.inmu!=3 && sta->pla.ent.inmu!=0){
+        sta->pla.ent.inmu -= 1;
+    }
+    if(sta->pla.ent.inmu==0){
+        sta->pla.ent.inmu =3;
     }
 
     // == Update entities
@@ -157,10 +175,12 @@ void state_populate_random(level *lvl, state *sta, int n_enemies){
                     new_enemy->kind   = BRUTE;
                     new_enemy->ent.hp = BRUTE_HP;
                     new_enemy->ent.rad = BRUTE_RAD;
+                    new_enemy->ent.dam = BRUTE_DAM;
                 }else{
                     new_enemy->kind   = MINION;
                     new_enemy->ent.hp = MINION_HP;
                     new_enemy->ent.rad = MINION_RAD;
+                    new_enemy->ent.dam = MINION_DAM;
                 }
                 // Break while(1) as the operation was successful
                 break;
