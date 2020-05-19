@@ -88,18 +88,18 @@ void state_update(level *lvl, state *sta){
     for(int i=0;i<sta->n_enemies;i++){
         //if a enemy is colliding with the player
         if(entity_collision(&sta->enemies[i].ent,&sta->pla.ent)){
-            if(sta->pla.ent.inmu==3){
+            if(sta->pla.ent.inmu==4){
                 sta->pla.ent.hp -= sta->enemies[i].ent.dam;
                 sta->pla.ent.inmu -=1;
             }
         }
     }
     //inmunity frame
-    if(sta->pla.ent.inmu!=3 && sta->pla.ent.inmu!=0){
+    if(sta->pla.ent.inmu!=4 && sta->pla.ent.inmu!=0){
         sta->pla.ent.inmu -= 1;
     }
     if(sta->pla.ent.inmu==0){
-        sta->pla.ent.inmu =3;
+        sta->pla.ent.inmu =4;
     }
 
     // == Update entities
