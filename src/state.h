@@ -7,7 +7,7 @@
 #define PLAYER_RAD 10
 #define PLAYER_SPEED 4
 #define PLAYER_COOLDOWN 8
-#define PLAYER_INMUNITY 3
+#define PLAYER_INMUNITY 4
 
 #define MINION_HP   4
 #define MINION_RAD 12
